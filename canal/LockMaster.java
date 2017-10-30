@@ -1,6 +1,9 @@
 package canal;
 
+import java.util.ArrayDeque;
+import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * A {@link CanalSegmentGuard} for a {@link Lock}.
@@ -12,11 +15,17 @@ import java.util.Queue;
  */
 public class LockMaster implements CanalSegmentGuard {
 
+    private Lock myLock;
+    private Queue<Integer> boats;
+    private int count;
     /**
      * Create a LockMaster. Admission ID system is initialized.
      * @param canalLock the lock to which this LockMaster is assigned
      */
     public LockMaster( Lock canalLock ) {
+        myLock = canalLock;
+        count = 0;
+        boats = new LinkedList<>();
     }
 
     /**
@@ -36,7 +45,9 @@ public class LockMaster implements CanalSegmentGuard {
      */
     @Override
     public synchronized int requestEntryToSegment() {
-        return 1;
+        count ++;
+        boats.add(count);
+        return count;
     }
 
     /**
@@ -54,8 +65,18 @@ public class LockMaster implements CanalSegmentGuard {
      */
     @Override
     public synchronized void waitForTurn( int boatID, String goingInMsg ) {
-        // ...
+
+            try{
+                while(boats.peek() != boatID || !myLock.isAvailable()){
+                    wait();
+                }
+
+            }   catch(InterruptedException e) {
+                e.printStackTrace();
+            }
         Utilities.log( goingInMsg );
+        boats.remove();
+        myLock.enter();
     }
 
     /**
@@ -72,7 +93,8 @@ public class LockMaster implements CanalSegmentGuard {
      */
     @Override
     public synchronized void leavingSegment( String goingOutMsg ) {
-        // ...
+        myLock.leave();
+        notifyAll();
         Utilities.log( goingOutMsg );
     }
 

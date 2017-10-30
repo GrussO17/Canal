@@ -47,7 +47,7 @@ public class Lock implements CanalSegment {
      */
     @Override
     public String toString() {
-        return "Lock " + num + " [len=" + length + "',ht=" + depth + "']";
+        return "Lock " + num + "[len=" + length + "',ht=" + depth + "']";
     }
 
     /**
@@ -73,8 +73,12 @@ public class Lock implements CanalSegment {
     @Override
     public float computeTime( int boatLength ) {
         float time = 0;
-        time += (length + boatLength)/Utilities.BOAT_LOCK_SPEED;
+        time += boatLength / Utilities.BOAT_LOCK_SPEED;
         time += depth/Utilities.UP_DOWN_SPEED;
+        time += (length - boatLength) / Utilities.BOAT_LOCK_SPEED;
+        time += boatLength / Utilities.BOAT_LOCK_SPEED;
+        time += depth/Utilities.UP_DOWN_SPEED;
+
         return time;
     }
 

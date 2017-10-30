@@ -37,7 +37,7 @@ public class Boat extends Thread {
      */
     @Override
     public String toString() {
-        return name + "[len=" + length + "]";
+        return name + "[len=" + length + "']";
     }
 
     /**
@@ -68,8 +68,12 @@ public class Boat extends Thread {
     public void run() {
         int boatID;
         for(CanalSegment lock: route){
-         boatID = (lock.getGuard().requestEntryToSegment());
-         lock.getGuard().waitForTurn(boatID,this + "is entering " + lock.toString());
+            Utilities.log(name + " arriving at " + lock.toString());
+            boatID = (lock.getGuard().requestEntryToSegment());
+             long time = Math.round(lock.computeTime(length));
+             lock.getGuard().waitForTurn(boatID,this + " is entering " + lock.toString() + " for " + time + " minutes.");
+             Utilities.sleep(time);
+             lock.getGuard().leavingSegment(this + " has left " + lock.toString());
         }
 
 

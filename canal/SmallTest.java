@@ -50,7 +50,10 @@ public class SmallTest {
      */
     public static void main( String[] args ) {
 
-        CanalSegment lock1 = new Lock( 1, 4, 30 );
+        /**
+         *
+
+        CanalSegment lock1 = new Lock( 1, 40, 30 );
 
         List< CanalSegment > fullCanalRoute = Arrays.asList( lock1 );
 
@@ -60,6 +63,8 @@ public class SmallTest {
         b1.start();
         Utilities.sleep(1);
         b2.start();
+         */
+        smalltest();
 
     }
 
