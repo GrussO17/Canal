@@ -110,7 +110,7 @@ public class MyTest {
         Boat b2 = new Boat( "Ean", 8, partialCanalRoute3);
         Boat b3 = new Boat("Carolyn", 35, fullCanalRoute);
         Boat b4 = new Boat( "Petite", 25, partialCanalRoute2);
-        Boat b5 = new Boat( "Nuggets", 30, fullCanalRoute );
+        Boat b5 = new Boat( "Nuggets", 30, partialCanalRoute1 );
 
         b1.start();
         Utilities.sleep( 2 );
